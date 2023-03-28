@@ -4,6 +4,6 @@
     <title>@yield('title', 'Weibo App')</title>
   </head>
   <body>
-    @@yield('content')
+    @yield('content')
   </body>
 </html>
