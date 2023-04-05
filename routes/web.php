@@ -13,18 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+//weibo静态页面 主页 帮助页 关于页
 Route::get('/', 'StaticPagesController@home')->name('home');
 Route::get('/help', 'StaticPagesController@help')->name('help');
 Route::get('/about', 'StaticPagesController@about')->name('about');
 
-/*注册*/
+//注册
 Route::get('signup', 'UsersController@create')->name('signup');
 
-
-
+//用户资源路由
 Route::resource('users', 'UsersController');
 /**
  * 上面Route::resource('users', 'UsersController');将等同于：
@@ -36,3 +33,10 @@ Route::resource('users', 'UsersController');
  *Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
  *Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
  */
+
+ //登录页面
+ Route::get('login', 'SessionsController@create')->name('login');
+ //执行登录操作(创建新会话)
+ Route::post('login', 'SessionsController@store')->name('login');
+ //退出(销毁会话)
+ Route::delete('logout', 'SessionsController@destroy')->name('logout');

@@ -37,6 +37,7 @@
              </div>
 
              <button type="submit" class="btn btn-primary">注册</button>
+          </form>
        </div>
 
       </div>
