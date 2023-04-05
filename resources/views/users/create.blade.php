@@ -8,8 +8,9 @@
         <div class="card-header">
           <h5>注册</h5>
         </div>
-        <div>
+        <div class="card-body">
           <form method="POST" action="{{ route('users.store') }}">
+
              {{ csrf_field() }}
 
              <div class="form-group">
