@@ -25,7 +25,7 @@ class SessionsController extends Controller
             'password' => 'required'
         ]);
 
-        if(Auth::attempt($credentials)){
+        if(Auth::attempt($credentials, $request->has('remember'))){
             //登录成功后
             session()->flash('success', '欢迎回来！');
             return  redirect()->route('users.show', [Auth::user()]);//跳转个人页面
@@ -41,7 +41,7 @@ class SessionsController extends Controller
     /**
      * 退出
      */
-    public function destory()
+    public function destroy()
     {
         Auth::logout();
         session()->flash('success', '您已成功退出！');
