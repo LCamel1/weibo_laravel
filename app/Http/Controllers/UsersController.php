@@ -111,7 +111,7 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        $this->authorize('destroy', $user);//只允许已登录的 管理员 进行删除操作
+        $this->authorize('destroy', $user);////只允许已登录的 管理员 进行删除操作
         $user->delete();
         session()->flash('success', '成功删除用户！');
         return back();
