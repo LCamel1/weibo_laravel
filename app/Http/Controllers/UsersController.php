@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        //过滤未登录用户的 edit, update 动作
+        $this->middleware('auth', [
+            'except' => ['show','create','store']
+        ]);
+        //只让未登录用户访问注册页面
+        $this->middleware('guest', [
+            'only'=>['create']
+        ]);
+    }
     /**
      * 注册页面
      */
@@ -49,6 +60,7 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);//用户只能编辑自己的资料
         return view('users.edit', compact('user'));
     }
 
@@ -57,13 +69,14 @@ class UsersController extends Controller
      */
     public function update(User $user, Request $request)
     {
+        $this->authorize('update', $user);//用户只能编辑自己的资料
          $this->validate($request, [
             'name' => 'required|max:50',
             'password' => 'nullable|confirmed|min:6'
         ]);
 
         $updateData = array();
-        if ($request->name != $request->local_name) {
+        if ($request->name != $user->name) {
             //判断修改的用户名是否已存在
             if (User::where('name', '=', $request->name)->first()) {
                 session()->flash('danger', '修改失败，该用户名已存在！');

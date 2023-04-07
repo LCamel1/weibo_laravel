@@ -25,7 +25,6 @@
              <div class="form-group">
               <label for="name">名称：</label>
               <input type="text" name="name" class="form-control" value="{{ $user->name }}">
-              <input type="hidden" name="local_name" class="form-control" value="{{ $user->name }}">
              </div>
 
              <div class="form-group">
