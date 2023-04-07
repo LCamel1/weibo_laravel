@@ -12,12 +12,20 @@ class UsersController extends Controller
     {
         //过滤未登录用户的 edit, update 动作
         $this->middleware('auth', [
-            'except' => ['show','create','store']
+            'except' => ['show','create','store','index']
         ]);
         //只让未登录用户访问注册页面
         $this->middleware('guest', [
             'only'=>['create']
         ]);
+    }
+    /**
+     * 用户列表
+     */
+    public function index()
+    {
+        $users = User::paginate(2);
+        return view('users.index',compact('users'));
     }
     /**
      * 注册页面
