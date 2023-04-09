@@ -40,3 +40,5 @@ Route::resource('users', 'UsersController');
  Route::post('login', 'SessionsController@store')->name('login');
  //退出(销毁会话)
  Route::delete('logout', 'SessionsController@destroy')->name('logout');
+
+ Route::get('signup/comfirm/{token}','UsersController@confirmEmail')->name('confirm_email');

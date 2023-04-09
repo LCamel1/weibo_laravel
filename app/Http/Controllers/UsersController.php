@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -12,7 +13,7 @@ class UsersController extends Controller
     {
         //过滤未登录用户的 edit, update 动作
         $this->middleware('auth', [
-            'except' => ['show','create','store','index']
+            'except' => ['show','create','store','index', 'confirmEmail']
         ]);
         //只让未登录用户访问注册页面
         $this->middleware('guest', [
@@ -58,9 +59,43 @@ class UsersController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
-        Auth::login($user);//注册成功后自动登录
-        session()->flash('success', '欢迎，您将在这里开启一段新的旅程～');
-        return redirect()->route('users.show', [$user]); # 注册成功重定向跳转show页面，等同于redire()->route('users.show', [$user->id])
+        //用户注册后需要激活邮箱才能登录
+        $this->sendEmailConfirmationTo($user);
+        session()->flash('success', '验证邮件已发送到你的注册邮箱上，请注意查收！');
+        return redirect('/');
+    }
+    /**
+     * 邮件发送
+     */
+    public function sendEmailConfirmationTo($user)
+    {
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = 'LCamel@example.com';
+        $name = 'Lcamel';
+        $to = $user->email;
+        $subject = "感谢注册 weibo 应用！请确认你的邮箱";
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject){
+            $message->from($from,$name)->to($to)->subject($subject);
+        });
+    }
+
+     /**
+     * 邮件激活
+     */
+    public function confirmEmail($token)
+    {
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+
+        Auth::login($user); //激活后直接登录
+        session()->flash('success', '恭喜你，激活成功！');
+
+        return redirect()->route('users.show', [$user]); # 注册成功重定向跳转show页面，等同于redirect()->route('users.show', [$user->id])
     }
 
     /**
@@ -116,4 +151,5 @@ class UsersController extends Controller
         session()->flash('success', '成功删除用户！');
         return back();
     }
+
 }
