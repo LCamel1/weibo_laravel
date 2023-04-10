@@ -9,6 +9,7 @@ class Status extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['content'];
     /**
      * 一条微博属于一个用户
      */
