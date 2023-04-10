@@ -12,6 +12,13 @@ use Carbon\Carbon;
 
 class PasswordController extends Controller
 {
+    public function __construct()
+    {
+        //密码重置邮件限流 —— 10 分钟内只能尝试 3 次
+        $this->middleware('throttle:3,10', [
+            'only' => ['sendResetLinkEmail']
+        ]);
+    }
     /**
      * 密码重置提交邮箱页面
      */
