@@ -61,4 +61,12 @@ class User extends Authenticatable
         return "http://cravatar.cn/avatar/$hash?s=$size";
     }
 
+    /**
+     * 一个用户拥有多条微博
+     */
+    public function statuses()
+    {
+        return $this->hasMany(Status::class);
+    }
+
 }
