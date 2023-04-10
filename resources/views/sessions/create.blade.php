@@ -33,6 +33,7 @@
             </div>
 
              <button type="submit" class="btn btn-primary">登录</button>
+             <a href="{{ route('password.request') }}">忘记密码？</a>
           </form>
           <hr />
           <p>还没帐号？ <a href="{{ route('signup') }}">现在注册！</a></p>
