@@ -54,3 +54,6 @@ Route::resource('users', 'UsersController');
 
  Route::get('/users/{user}/followings', 'UsersController@followings')->name('users.followings');
  Route::get('/users/{user}/followers', 'UsersController@followers')->name('users.followers');
+
+ Route::Post('/followers/{user}', 'FollowersController@store')->name('followers.store');
+ Route::delete('/followers/{user}', 'FollowersController@destroy')->name('followers.destroy');
