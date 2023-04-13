@@ -1,10 +1,10 @@
-<a href="#">
+<a href="{{ route('users.followings', $user->id) }}">
   <strong id="following" class="stat">
     {{ count($user->followings) }}
   </strong>
-   关注
+  关注
 </a>
-<a href="#">
+<a href="{{ route('users.followers', $user->id) }}">
   <strong id="following" class="stat">
     {{ count($user->followers) }}
   </strong>
@@ -14,5 +14,5 @@
   <strong id="following" class="stat">
     {{ $user->statuses()->count() }}
   </strong>
-   微博
+  微博
 </a>
